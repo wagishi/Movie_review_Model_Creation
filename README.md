@@ -1,82 +1,75 @@
-# 🎬 Movie Review Sentiment Analysis
+# 🎬 ReelFeel — Movie Review Sentiment Analyzer
 
-A Machine Learning and Natural Language Processing (NLP) project that classifies movie reviews as **Positive** or **Negative** using **TF-IDF Vectorization** and **Logistic Regression**.
+A small NLP application that predicts whether a movie review expresses **positive** or **negative** sentiment. It uses TF-IDF features and a Logistic Regression classifier, with a Streamlit web interface.
 
-## 📖 Overview
+## Live locally
 
-This project analyzes movie review text data and predicts the sentiment expressed in each review. The workflow includes text preprocessing, stopword removal, feature extraction using TF-IDF, visualization with Word Clouds, model training, evaluation, and model saving for future deployment.
+### 1. Clone the repository
 
-## 🚀 Features
+```bash
+git clone https://github.com/wagishi/Movie_review_Model_Creation.git
+cd Movie_review_Model_Creation
+```
 
-- Text preprocessing and cleaning
-- Stopword removal using NLTK
-- TF-IDF feature extraction
-- Positive and Negative Word Cloud visualization
-- Logistic Regression classification model
-- Confusion Matrix evaluation
-- Model serialization using Pickle
+### 2. Create and activate a virtual environment
 
-## 🛠️ Technologies Used
+**Windows (PowerShell):**
 
-- Python
-- Pandas
-- NLTK
-- Scikit-Learn
-- Matplotlib
-- WordCloud
-- Pickle
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
 
-## 📂 Project Workflow
+**macOS / Linux:**
 
-1. Load Movie Review Dataset
-2. Remove missing values
-3. Clean review text and remove stopwords
-4. Generate Word Clouds for sentiment visualization
-5. Convert text into numerical features using TF-IDF
-6. Train Logistic Regression model
-7. Evaluate performance using Confusion Matrix
-8. Save trained model and vectorizer
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
 
-## 📊 Model
+### 3. Install dependencies and launch
 
-**Algorithm:** Logistic Regression
+```bash
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+streamlit run app.py
+```
 
-**Feature Extraction:** TF-IDF Vectorization
+Streamlit will print a local URL (usually http://localhost:8501) that you can open in your browser. The first run may download the NLTK English stopword corpus.
 
-**Sentiment Labels:**
+## How it works
 
-| Label | Sentiment |
-|---------|----------|
-| 1 | Positive |
-| 0 | Negative |
+1. Enter or paste a movie review.
+2. The app removes English stopwords using the same approach as the training notebook.
+3. The saved TF-IDF vectorizer converts the cleaned text into numeric features.
+4. The saved Logistic Regression model predicts positive (1) or negative (0).
+5. If the estimator supports `predict_proba`, the app displays its class-probability estimates.
 
-## 📈 Visualizations
+## Project files
 
-- Positive Review Word Cloud
-- Negative Review Word Cloud
-- Confusion Matrix
+| File | Purpose |
+|---|---|
+| `app.py` | Streamlit web application and inference |
+| `movie_review_model_creation.py` | Original training workflow |
+| `Movie_Review.csv` | Movie review dataset |
+| `model.pkl` | Saved Logistic Regression model |
+| `scaler.pkl` | Saved TF-IDF vectorizer (historical filename) |
+| `requirements.txt` | Runtime dependencies |
 
-## 💾 Saved Files
+## Important notes
 
-- `model.pkl` → Trained Logistic Regression Model
-- `scaler.pkl` → TF-IDF Vectorizer
+- The model is binary: positive or negative. It is not designed to detect neutral sentiment.
+- Probability values are model estimates, not guarantees and not necessarily calibrated confidence.
+- Sarcasm, mixed sentiment, slang, and out-of-domain reviews can reduce performance.
+- The pickle artifacts must come from a trusted source. Loading an untrusted pickle file can execute arbitrary code.
+- The app uses the same stopword-removal logic as the notebook. If you retrain the model with different preprocessing or vectorizer settings, update and version the artifacts together.
 
-## 🔮 Future Improvements
+## Deploy
 
-- Deep Learning Models (LSTM, GRU)
-- Transformer Models (BERT)
-- Streamlit Web Application
-- REST API Deployment
-- Multi-class Sentiment Classification
+For Streamlit Community Cloud, select this repository, set the main file path to `app.py`, and use `requirements.txt` for dependencies. Ensure `model.pkl` and `scaler.pkl` are included in the repository or otherwise made available to the app.
 
-## 🎯 Learning Outcomes
+## Model
 
-- Natural Language Processing fundamentals
-- Text preprocessing techniques
-- TF-IDF feature engineering
-- Machine Learning model training and evaluation
-- Model serialization and deployment preparation
-
-## 👨‍💻 Author
-
-**Wagishi Jagat**  
+- **Vectorization:** TF-IDF (`max_features=2500` in the training notebook)
+- **Classifier:** Logistic Regression
+- **Output classes:** Positive / Negative
